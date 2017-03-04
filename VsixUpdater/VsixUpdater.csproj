@@ -57,7 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Helpers.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="VsixUpdaterTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -65,6 +65,9 @@
     <Content Include="VsixUpdater.nuspec" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
+    </None>
+    <None Include="VsixUpdater.targets">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

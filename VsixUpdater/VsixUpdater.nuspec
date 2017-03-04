@@ -41,6 +41,7 @@
 
   <!-- A readme.txt will be displayed when the package is installed -->
   <files>
-    <file src="**" target="tools" />
+    <file src="*.dll" target="tools" />
+    <file src="*.targets" target="build" />
   </files>
 </package>
