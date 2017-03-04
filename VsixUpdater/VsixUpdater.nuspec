@@ -5,7 +5,7 @@
     <id>VsixUpdater</id>
 
     <!-- The package version number that is used when resolving dependencies -->
-    <version>1.0.0.0</version>
+    <version>@version</version>
 
     <!-- Authors contain text that appears directly on the gallery -->
     <authors>Péter Major</authors>
@@ -37,11 +37,6 @@
 
     <!-- Tags appear in the gallery and can be used for tag searches -->
     <tags>vsix v3</tags>
-
-    <!-- Dependencies are automatically installed when the package is installed -->
-    <!-- <dependencies>
-      <dependency id="Newtonsoft.Json" version="9.0" />
-    </dependencies> -->
   </metadata>
 
   <!-- A readme.txt will be displayed when the package is installed -->
