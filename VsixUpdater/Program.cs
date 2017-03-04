@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Build.Framework;
+using Microsoft.Build.Utilities;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Packaging;
@@ -7,7 +9,7 @@ using System.Xml.Linq;
 
 namespace VsixUpdater
 {
-  class Program
+  public class VsixUpdaterTask : Task
   {
     private const string _vsixTempDir = "vsixTemp";
     private const string _manifestName = "extension.vsixmanifest";
@@ -19,9 +21,28 @@ namespace VsixUpdater
     private const string _manifestFilePath = "/manifest.json";
     private const string _packageType = "Vsix";
 
-    static void Main(string[] args)
+    [Required]
+    public string OutputPath { get; set; }
+
+    public override bool Execute()
     {
-      var vsixPath = args[0];
+      try
+      {
+        var vsixPaths = Directory.GetFiles(OutputPath, "*.vsix", SearchOption.AllDirectories);
+        foreach (var vsixPath in vsixPaths)
+        {
+          UpdatePackage(vsixPath);
+        }
+        return true;
+      }
+      catch
+      {
+        return false;
+      }
+    }
+
+    private void UpdatePackage(string vsixPath)
+    {
       var installDirName = Path.GetRandomFileName();
 
       //Open package
@@ -135,7 +156,7 @@ namespace VsixUpdater
           {
             id = packageId,
             version = packageVersion,
-            type = VsixUpdater.Program._packageType,
+            type = VsixUpdater.VsixUpdaterTask._packageType,
             payloads = new []
             {
               new
