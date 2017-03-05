@@ -69,7 +69,7 @@ namespace VsixUpdater
         {
           var oldVersion = target.Attribute("Version").Value;
           var versionParts = oldVersion.Trim('(', ')', '[', ']').Split(',');
-          var newVersion = oldVersion[0] + versionParts[0] + _nextVisualStudioVersion + ')';
+          var newVersion = oldVersion[0] + versionParts[0] + "," + _nextVisualStudioVersion + ')';
           target.Attribute("Version").Value = newVersion;
         }
       }
@@ -121,12 +121,12 @@ namespace VsixUpdater
         .Except(exceptions)
         .Select(p => new
         {
-          path = p,
+          fileName = p,
           sha256 = package.CalculateHash(p)
         })
         .ToArray();
 
-      var installSize = files.Sum(p => package.GetSize(p.path));
+      var installSize = files.Sum(p => package.GetSize(p.fileName));
       var installationPath = $"[installdir]\\Common7\\IDE\\Extensions\\{installDirName}";
       var catalog = new
       {
