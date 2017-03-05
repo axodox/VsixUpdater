@@ -31,6 +31,7 @@ namespace VsixUpdater
         var vsixPaths = Directory.GetFiles(OutputPath, "*.vsix", SearchOption.AllDirectories);
         foreach (var vsixPath in vsixPaths)
         {
+          Log.LogMessage(MessageImportance.High, $"Updating {vsixPath}...");
           UpdatePackage(vsixPath);
         }
         return true;

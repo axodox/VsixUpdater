@@ -89,7 +89,7 @@ namespace VsixUpdater
     {
       var filesToRecompress = package
         .GetParts()
-        .Where(p => p.CompressionOption == CompressionOption.Maximum)
+        .Where(p => p.CompressionOption != CompressionOption.Maximum)
         .Select(p => p.Uri)
         .ToArray();
 
