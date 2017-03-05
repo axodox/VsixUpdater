@@ -139,7 +139,7 @@ namespace VsixUpdater
             version = packageVersion,
             type = "Component",
             extension = true,
-            dependencies = new global::System.Collections.Generic.Dictionary<string, string>(dependencies)
+            dependencies = new Dictionary<string, string>(dependencies)
             {
               { packageId, packageVersion }
             },
@@ -157,12 +157,12 @@ namespace VsixUpdater
           {
             id = packageId,
             version = packageVersion,
-            type = VsixUpdater.VsixUpdaterTask._packageType,
+            type = _packageType,
             payloads = new []
             {
               new
               {
-                fileName = global::System.IO.Path.GetFileName(vsixPath),
+                fileName = Path.GetFileName(vsixPath),
                 size = installSize
               }
             },
