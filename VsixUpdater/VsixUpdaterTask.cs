@@ -1,7 +1,9 @@
 ﻿using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Packaging;
 using System.Linq;
@@ -23,6 +25,8 @@ namespace VsixUpdater
 
     [Required]
     public string OutputPath { get; set; }
+
+    public string Include { get; set; }
 
     public override bool Execute()
     {
@@ -48,6 +52,9 @@ namespace VsixUpdater
 
       //Open package
       var package = Package.Open(vsixPath, FileMode.Open, FileAccess.ReadWrite);
+      
+      //Add included files
+      AddIncludedFiles(package);
 
       //Modify manifest
       var manifestText = package.ReadAllText(_manifestName);
@@ -197,6 +204,38 @@ namespace VsixUpdater
       //Save
       package.Flush();
       package.Close();
+    }
+
+    private void AddIncludedFiles(Package package)
+    {
+      if (string.IsNullOrWhiteSpace(Include)) return;
+
+      var existingFiles = package.GetAllFiles();
+      var directoryPath = new DirectoryInfo(OutputPath).FullName;
+      foreach (var pattern in Include.Split(';'))
+      {
+        var newFiles = Directory.GetFiles(directoryPath, pattern, SearchOption.TopDirectoryOnly);
+        if (newFiles.Length > 0)
+        {
+          foreach (var newFile in newFiles)
+          {
+            var newFileName = newFile.Substring(directoryPath.Length - 1).Replace("\\", "/");
+            if (existingFiles.Contains(newFileName, StringComparer.CurrentCultureIgnoreCase))
+            {
+              Log.LogMessage(MessageImportance.Normal, $"Included file {newFileName} already exists.");
+            }
+            else
+            {
+              Log.LogMessage(MessageImportance.Normal, $"Adding file {newFileName}...");
+              package.WriteAllBytes(newFileName, File.ReadAllBytes(newFile));
+            }
+          }
+        }
+        else
+        {
+          Log.LogMessage(MessageImportance.High, $"Include pattern {pattern} matched no files!");
+        }
+      }
     }
   }
 }
