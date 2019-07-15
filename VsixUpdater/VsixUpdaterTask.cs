@@ -18,7 +18,7 @@ namespace VsixUpdater
     private const string _baseDependencyName = "Microsoft.VisualStudio.Component.CoreEditor";
     private const string _baseDependencyVersion = "[15.0," + _nextVisualStudioVersion + ")";
     private const string _baseDependencyDescription = "Visual Studio core editor";
-    private const string _nextVisualStudioVersion = "16.0";
+    private const string _nextVisualStudioVersion = "17.0";
     private const string _catalogFilePath = "/catalog.json";
     private const string _manifestFilePath = "/manifest.json";
     private const string _packageType = "Vsix";
